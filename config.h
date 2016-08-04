@@ -5,8 +5,8 @@
 
 #define GRBL                                1
 #define SENSOR                              1
-#define BT_SART_PAUSE                       0
-#define BT_STOP                             0
+#define BT_SART_PAUSE                       1
+#define BT_STOP                             1
 
 
 

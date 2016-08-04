@@ -12,7 +12,7 @@ sensor::sensor(float a, float b): COEFA(a), COEFB(b)
     bool PortTrouve = false;
     QList<QSerialPortInfo> liste = QSerialPortInfo::availablePorts();
     for (int i = 0;i<liste.size();i++){
-        if (QString(liste[i].serialNumber()).contains("A104WP3SA"))
+        if (QString(liste[i].serialNumber()).contains("A104WP3S"))
         {
             serial.setPortName(liste[i].portName());
             qDebug() << "Nom        : " << liste[i].portName();
@@ -56,11 +56,11 @@ float sensor::GetDistance()
         ba.append("\r");
         //serial.clear();
         serial.write(ba);
-        serial.flush();
+        //serial.flush();
         serial.waitForBytesWritten(-1);
         //while(serial.flush());
 
-        //qDebug() << "Demande de distance" << endl;
+        qDebug() << "Demande de distance" << endl;
 
         //Attente datas disponibles
         //while(!serial.waitForReadyRead(10));
@@ -72,7 +72,7 @@ float sensor::GetDistance()
             //serial.waitForReadyRead(10);
             Bresponse = serial.readAll();
             response += QString(Bresponse);
-            //qDebug() << "response : " << response << endl;
+            qDebug() << "response : " << response << endl;
             if(response.contains('\n'))
                 break;
         }

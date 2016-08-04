@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
         return EXIT_PARAMETRE_MANQUANT;
 
 #if BT_SART_PAUSE || BT_STOP
-    wiringPiSetup(); //Initialise les IOs du RPI
+    wiringPiSetupGpio(); //Initialise les IOs du RPI
 #endif
 
 #if BT_SART_PAUSE
@@ -169,7 +169,6 @@ int main(int argc, char *argv[])
 
     grbl Grbl(OFFSETX, OFFSETY);//instantiation de GRBL avec les offsets de position du capteur par rapport à l'outil
     sensor Sensor(COEFA, COEFB);//instantiation de Sensor avec les coefs de la droite de sortie du capteur (tension -> distance)
-
     Grbl.MoveTo(XREF, YREF);//Déplacement de la tête vers la position de référence
     QThread::msleep(300);
     Zref = Sensor.GetDistance();//Mesure de la hauteur de référence
