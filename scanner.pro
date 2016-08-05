@@ -8,6 +8,8 @@ TARGET = scanner
 CONFIG += console
 CONFIG -= app_bundle
 
+LIBS += -L/usr/local/lib/ -lwiringPi
+
 TEMPLATE = app
 
 SOURCES += main.cpp \

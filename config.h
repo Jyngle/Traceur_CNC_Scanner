@@ -3,10 +3,12 @@
 
 
 
+
 #define GRBL                                0
 #define SENSOR                              0
 #define BT_SART_PAUSE                       0
 #define BT_STOP                             0
+
 
 #define ERROR "/err.nc"
 #define PATH_PARAM "/config/paramScanner.txt"

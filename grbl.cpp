@@ -55,10 +55,11 @@ void grbl::MoveTo(float X, float Y)
         //Préparation de la trame
         QByteArray ba = QString("G01 X" + QString::number(X + _OFFSETX) + " Y" + QString::number(Y + _OFFSETY) + " F" + QString::number(VITESSE)).toLocal8Bit(); //conversion QString -> QByteArray
         ba.append("\r");
-        serial.flush();
-        serial.waitForBytesWritten(-1);
+        //serial.flush();
+
         //Envoi de la trame à GRBL
         serial.write(ba);
+        serial.waitForBytesWritten(-1);
         serial.flush();
 
     }
@@ -86,7 +87,6 @@ bool grbl::IsAt(float X, float Y)
     QString ValXYZ;
     QStringList Vals;
     float Xm, Ym;
-
     if (serial.isOpen() && serial.isWritable())
     {
         //Préparation de la trame
@@ -94,9 +94,9 @@ bool grbl::IsAt(float X, float Y)
         serial.flush();
         //Envoi de la trame à GRBL
         serial.write(ba);
-        serial.flush();
+        //serial.flush();
         serial.waitForBytesWritten(-1);
-        //qDebug() << "Demande de position outil a GRBL" << endl;
+        qDebug() << "Demande de position outil a GRBL" << endl;
 
 
 
@@ -112,7 +112,7 @@ bool grbl::IsAt(float X, float Y)
         ValXYZ = QString(response.split("WPos:")[1]).split(">")[0];
         Vals = ValXYZ.split(",");
 
-        //qDebug() << "Xm :" << Vals[0] << "    Ym :" << Vals[1] << endl;
+        qDebug() << "Xm :" << Vals[0] << "    Ym :" << Vals[1] << endl;
         Xm = Vals[0].toFloat();
         Ym = Vals[1].toFloat();
 
@@ -120,7 +120,7 @@ bool grbl::IsAt(float X, float Y)
         //Si la tête est arrivée au point X Y à plus moins la télérance return true sinon false
         if(Xm > X-TOLERANCE && Xm < X+TOLERANCE && Ym > Y-TOLERANCE && Ym < Y+TOLERANCE)
         {
-            //qDebug() << "Position atteinte" << endl;
+            qDebug() << "Position atteinte" << endl;
             return true;
         }
         else
