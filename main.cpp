@@ -43,15 +43,26 @@ int main(int argc, char *argv[])
     QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
     QTextStream stream_log(&errFile);
     errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+    errFile.resize(0);
+    errFile.close();
+
 
     if(argc < 2) //Si pas de nom de fichier quitter
     {
+        QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
+        QTextStream stream_log(&errFile);
+        errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
         stream_log << "Nom du fichier Scan3D manquant." << endl;
         errFile.close();
         return 1;
     }
     else if(argc != 2)
     {
+        QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
+        QTextStream stream_log(&errFile);
+        errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
         stream_log << "Trop d'arguments lors de l'applel du Sanner." << endl;
         errFile.close();
         return 1;
@@ -70,6 +81,10 @@ int main(int argc, char *argv[])
     }
     else
     {
+        QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
+        QTextStream stream_log(&errFile);
+        errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
         qDebug() << "Probleme a la lecture du fichier scan";
         stream_log << "Probleme a la lecture du fichier scan." << endl;
         errFile.close();
@@ -134,6 +149,10 @@ int main(int argc, char *argv[])
 
     if(test != 7)//Si tous les paramètres ne sont pas trouvés quitter
     {
+        QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
+        QTextStream stream_log(&errFile);
+        errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
         stream_log << "Parametres manquants dans fichier scan" << endl;
         errFile.close();
         return EXIT_PARAMETRE_MANQUANT_SCAN;
@@ -152,6 +171,11 @@ int main(int argc, char *argv[])
     else
     {
         qDebug() << "Probleme a la lecture du fichier param sensor";
+
+        QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
+        QTextStream stream_log(&errFile);
+        errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
         stream_log << "Probleme a la lecture du fichier param sensor." << endl;
         errFile.close();
         return EXIT_PRB_OUVERTURE_FICHIER_PARAM_SENSOR;
@@ -202,6 +226,10 @@ int main(int argc, char *argv[])
 
     if(test != 6)//Si tous les paramètres ne sont pas trouvés quitter
     {
+        QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
+        QTextStream stream_log(&errFile);
+        errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
         stream_log << "Parametres manquants dans fichier param sensor" << endl;
         errFile.close();
         return EXIT_PARAMETRE_MANQUANT_SENSOR;
@@ -221,6 +249,7 @@ int main(int argc, char *argv[])
     pinMode(PIN_STOP, INPUT);
     wiringPiISR(PIN_STOP,INT_EDGE_FALLING,Stop);
 #endif
+
 
     grbl Grbl(OFFSETX, OFFSETY);//instantiation de GRBL avec les offsets de position du capteur par rapport à l'outil
     sensor Sensor(COEFA, COEFB);//instantiation de Sensor avec les coefs de la droite de sortie du capteur (tension -> distance)

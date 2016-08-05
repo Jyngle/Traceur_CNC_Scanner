@@ -24,6 +24,11 @@
     if(!PortTrouve) //Si le port n'est pas trouvé on quitte le programme
     {
         qDebug() << "GRBL non trouvé." << endl;
+
+        QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
+        QTextStream stream_log(&errFile);
+        errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
         stream_log << "Carte Arduino avec GRBL non trouvée" << endl;
         errFile.close();
         exit(EXIT_PORT_GRBL_NON_TROUVE);
@@ -66,6 +71,11 @@ void grbl::MoveTo(float X, float Y)
     else
     {
         qDebug() << "ERREUR de Port COM" << endl;
+
+        QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
+        QTextStream stream_log(&errFile);
+        errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
         stream_log << "Erreur de port COM (Arduino GRBL)." << endl;
         errFile.close();
         exit(EXIT_PRB_PORT_COM_GRBL);
@@ -131,6 +141,11 @@ bool grbl::IsAt(float X, float Y)
     else
     {
         qDebug() << "ERREUR de Port COM" << endl;
+
+        QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
+        QTextStream stream_log(&errFile);
+        errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
         stream_log << "Erreur de port COM (Arduino GRBL)." << endl;
         errFile.close();
         exit(EXIT_PRB_PORT_COM_GRBL);
