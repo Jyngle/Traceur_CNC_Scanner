@@ -89,7 +89,12 @@ float sensor::GetDistance()
             return dist;
     }
     else
+    {
         qDebug() << "ERREUR de Port COM" << endl;
+        stream_log << "Erreur de port COM (Arduino SENSOR)." << endl;
+        errFile.close();
+        exit(EXIT_PRB_PORT_COM_GRBL);
+    }
 
     return 0;
 #else

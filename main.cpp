@@ -40,24 +40,40 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
+    QFile errFile(QCoreApplication::applicationDirPath() + ERROR);
+    QTextStream stream_log(&errFile);
+    errFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
     if(argc < 2) //Si pas de nom de fichier quitter
+    {
+        stream_log << "Nom du fichier Scan3D manquant." << endl;
+        errFile.close();
         return 1;
+    }
+    else if(argc != 2)
+    {
+        stream_log << "Trop d'arguments lors de l'applel du Sanner." << endl;
+        errFile.close();
+        return 1;
+    }
 
     float Zref = 0;
 
-    //Ouverture du fichier contenant les paramètres
+    //Ouverture du fichier contenant les paramètres du scan
     QString FileNameOut = QCoreApplication::applicationDirPath() +  "/" + argv[1];
     QFile out(FileNameOut);
     QTextStream stream_out(&out);
 
     if(out.open(QIODevice::ReadWrite | QIODevice::Text))
     {
-        qDebug() << "Fichier ouvert !" << endl;
+        qDebug() << "Fichier ouvert (param scan) !" << endl;
     }
     else
     {
-        qDebug() << "Probleme a la lecture du fichier";
-        return EXIT_PRB_OUVERTURE_FICHIER_PARAM;
+        qDebug() << "Probleme a la lecture du fichier scan";
+        stream_log << "Probleme a la lecture du fichier scan." << endl;
+        errFile.close();
+        return EXIT_PRB_OUVERTURE_FICHIER_PARAM_SCAN;
     }
 
 
@@ -113,6 +129,40 @@ int main(int argc, char *argv[])
             test++;
         }
 
+
+    }
+
+    if(test != 7)//Si tous les paramètres ne sont pas trouvés quitter
+    {
+        stream_log << "Parametres manquants dans fichier scan" << endl;
+        errFile.close();
+        return EXIT_PARAMETRE_MANQUANT_SCAN;
+    }
+
+
+    //Ouverture du fichier contenant les paramètres du capteur
+    QString FileNameParamSensor = QCoreApplication::applicationDirPath() +  PATH_PARAM;
+    QFile param(FileNameParamSensor);
+    QTextStream stream_param(&param);
+
+    if(param.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        qDebug() << "Fichier ouvert (param sensor) !" << endl;
+    }
+    else
+    {
+        qDebug() << "Probleme a la lecture du fichier param sensor";
+        stream_log << "Probleme a la lecture du fichier param sensor." << endl;
+        errFile.close();
+        return EXIT_PRB_OUVERTURE_FICHIER_PARAM_SENSOR;
+    }
+
+    test = 0;
+
+    while (!stream_param.atEnd())
+    {
+        ligne = stream_param.readLine();
+
         if(ligne.contains("OFFSETX"))
         {
             OFFSETX = QString(ligne.split('=')[1]).toFloat();
@@ -150,8 +200,13 @@ int main(int argc, char *argv[])
         }
     }
 
-    if(test != 13)//Si tous les paramètres ne sont pas trouvés quitter
-        return EXIT_PARAMETRE_MANQUANT;
+    if(test != 6)//Si tous les paramètres ne sont pas trouvés quitter
+    {
+        stream_log << "Parametres manquants dans fichier param sensor" << endl;
+        errFile.close();
+        return EXIT_PARAMETRE_MANQUANT_SENSOR;
+    }
+
 
 #if BT_SART_PAUSE || BT_STOP
     wiringPiSetup(); //Initialise les IOs du RPI
@@ -198,7 +253,7 @@ int main(int argc, char *argv[])
     float altitude[iMax+1][jMax+1];
     float dist;
     int i = 0, j = 0;
-    QStringList gg;
+
 float TestX, TestY;
     //Début du scan
     for(i=0; i<=iMax; i++)//i = déplacement en X
@@ -267,7 +322,8 @@ float TestX, TestY;
 
 
 
-
+    stream_log << "Scan 3D réussi, " << QString::number(iMax * jMax) << " mesures effectuées." << endl;
+    errFile.close();
     out.close();
 
     return EXIT_SUCCESS;
