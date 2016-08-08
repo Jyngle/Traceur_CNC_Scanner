@@ -4,14 +4,15 @@
 
 
 
-#define GRBL                                0
-#define SENSOR                              0
-#define BT_SART_PAUSE                       0
-#define BT_STOP                             0
+#define GRBL                                1
+#define SENSOR                              1
+#define BT_SART_PAUSE                       1
+#define BT_STOP                             1
 
 
 #define ERROR "/err.nc"
 #define PATH_PARAM "/config/paramScanner.txt"
+#define SCAN "/scan/"
 
 
 #define EXIT_PRB_OUVERTURE_FICHIER_PARAM_SCAN    2

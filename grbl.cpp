@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QThread>
 #include <QString>
+#include <QFile>
 
  grbl::grbl(float OFFSETX, float OFFSETY): _OFFSETX(OFFSETX), _OFFSETY(OFFSETY)
 {

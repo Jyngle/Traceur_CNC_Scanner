@@ -1,6 +1,7 @@
 #include "sensor.h"
 #include <QDebug>
 #include <QThread>
+#include <QFile>
 
 
 

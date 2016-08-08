@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     float Zref = 0;
 
     //Ouverture du fichier contenant les paramètres du scan
-    QString FileNameOut = QCoreApplication::applicationDirPath() +  "/" + argv[1];
+    QString FileNameOut = QCoreApplication::applicationDirPath() +  SCAN + argv[1];
     QFile out(FileNameOut);
     QTextStream stream_out(&out);
 
