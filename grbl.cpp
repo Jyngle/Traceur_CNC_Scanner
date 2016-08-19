@@ -46,6 +46,9 @@
     serial.waitForReadyRead(50);
     serial.waitForReadyRead(50);
     serial.clear();
+    serial.write(QString("$X\r").toLocal8Bit());
+    serial.waitForBytesWritten(-1);
+    serial.flush();
 #endif
 }
 
